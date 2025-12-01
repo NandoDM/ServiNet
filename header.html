@@ -1,0 +1,56 @@
+<nav class="bg-white shadow-lg sticky top-0 z-50 nav-height">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div class="flex justify-between items-center h-full">
+            
+            <div class="flex items-center">
+                <a href="/ServiNet/index.html" class="flex items-center">
+                    <img src="/ServiNet/assets/img/logo.png" alt="ServiNet Logo" 
+                         class="w-12 h-10 object-contain mr-3">
+                    <span class="nav-logo font-bold text-gray-800">ServiNet</span>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="/ServiNet/index.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium transition duration-300">Inicio</a>
+                <a href="/ServiNet/pages/servicios.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium transition duration-300">Servicios</a>
+                <a href="/ServiNet/pages/acerca-de.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium transition duration-300">Cómo Funciona</a>
+                <a href="/ServiNet/pages/contacto.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium transition duration-300">Contacto</a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-4">
+                
+                <div id="nav-guest-area" class="flex items-center space-x-4">
+                    <a href="/ServiNet/pages/auth/login.html" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-lg">
+                        Iniciar Sesión
+                    </a>
+                </div>
+
+                <div id="nav-user-area" class="hidden">
+                </div>
+            </div>
+
+            <div class="md:hidden flex items-center space-x-4">
+                <a href="/ServiNet/pages/auth/login.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 font-medium text-base">
+                    Acceder
+                </a>
+                <button id="mobile-menu-btn" class="text-gray-600 hover:text-blue-600">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 py-4">
+            <div class="flex flex-col space-y-4">
+                <a href="/ServiNet/index.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium py-2">Inicio</a>
+                <a href="/ServiNet/pages/servicios.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium py-2">Servicios</a>
+                <a href="/ServiNet/pages/acerca-de.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium py-2">Cómo Funciona</a>
+                <a href="/ServiNet/pages/contacto.html" class="nav-link text-gray-600 hover:text-blue-600 font-medium py-2">Contacto</a>
+                <div class="border-t border-gray-200 pt-4">
+                    <a href="/ServiNet/pages/auth/login.html" class="block bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700 transition font-medium text-lg text-center">
+                        Iniciar Sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

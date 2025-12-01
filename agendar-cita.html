@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Cita - ServiNet</title>
+    <meta name="description" content="Selecciona la fecha, hora y confirma tu cita para el servicio profesional.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+    
+    <style>
+        .form-label {
+            display: block;
+            font-size: 0.875rem; 
+            font-weight: 500; 
+            color: #374151; 
+            margin-bottom: 0.25rem;
+        }
+        .form-input {
+            margin-top: 0.25rem;
+            display: block;
+            width: 100%;
+            border-width: 1px;
+            border-color: #D1D5DB;
+            border-radius: 0.375rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            padding: 0.75rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div id="header-container"></div>
+    
+    <main class="min-h-screen py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-10 bg-white p-6 rounded-lg shadow-md border-l-4 border-green-600">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-calendar-check text-green-600 mr-3"></i>
+                    Confirmar Cita
+                </h1>
+                <p class="text-gray-500 mt-2">
+                    Estás agendando un servicio con <span id="prof-name" class="font-semibold text-green-600">Cargando...</span>
+                </p>
+                <p class="text-gray-500 mt-1">
+                    Servicio seleccionado: <span id="service-name" class="font-semibold">Cargando...</span>
+                </p>
+            </header>
+
+            <div class="bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-gray-700 mb-6 border-b pb-4">
+                    Selecciona Fecha y Hora
+                </h2>
+                
+                <form id="agenda-form">
+                    <input type="hidden" id="service-id-hidden" name="id_servicio">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="fecha" class="form-label">Fecha del Servicio *</label>
+                            <input type="date" id="fecha" name="fecha" required class="form-input">
+                        </div>
+                        <div>
+                            <label for="hora" class="form-label">Hora Preferida *</label>
+                            <input type="time" id="hora" name="hora" required class="form-input">
+                            <p class="text-sm text-gray-500 mt-2">Los profesionales operan de 9:00 AM a 6:00 PM (Hora local).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="comentario" class="form-label">Comentarios Adicionales (Opcional)</label>
+                        <textarea id="comentario" name="comentario" rows="4" class="form-input" placeholder="Describe brevemente el problema, ubicación exacta o cualquier detalle que el profesional deba saber."></textarea>
+                    </div>
+
+                    <div id="form-message" class="hidden p-3 rounded-md mb-4 text-sm"></div>
+                    
+                    <div class="flex justify-end">
+                        <button type="submit" id="confirm-btn" class="px-8 py-3 bg-green-600 text-white rounded-md shadow-lg hover:bg-green-700 transition font-semibold">
+                            <i class="fas fa-check-circle mr-2"></i> Solicitar Cita
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <script src="/ServiNet/assets/js/app.js"></script>
+    <script>
+        // Función auxiliar para mostrar mensajes
+        function displayMessage(element, success, message) {
+            element.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700');
+            if (success) {
+                element.classList.add('bg-green-100', 'text-green-700');
+                element.classList.remove('bg-red-100', 'text-red-700');
+            } else {
+                element.classList.add('bg-red-100', 'text-red-700');
+                element.classList.remove('bg-green-100', 'text-green-700');
+            }
+            element.innerHTML = message;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Obtener IDs de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const profId = urlParams.get('prof');
+            const serviceId = urlParams.get('service');
+            
+            // 2. Inyectar IDs en campos ocultos
+            document.getElementById('service-id-hidden').value = serviceId;
+            
+            // 3. Lógica de Simulación de Carga de Nombres (para el header)
+            // Se asume que el backend (get_profesional_public_profile.php) puede devolver nombres
+            if (serviceId) {
+                fetch(`/ServiNet/api/get_profesional_public_profile.php?id=${profId}&service=${serviceId}`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success && data.data) {
+                            const p = data.data.perfil;
+                            const s = data.data.servicio_seleccionado;
+                            document.getElementById('prof-name').textContent = `${p.nombre} ${p.apellido_paterno}`;
+                            document.getElementById('service-name').textContent = s.nombre_servicio;
+                        } else {
+                            document.getElementById('prof-name').textContent = 'Error de carga';
+                            document.getElementById('service-name').textContent = 'Error de carga';
+                        }
+                    })
+                    .catch(e => {
+                        console.error("Error al cargar detalles:", e);
+                    });
+            } else {
+                document.getElementById('prof-name').textContent = 'ID de Profesional no válido';
+                document.getElementById('service-name').textContent = 'ID de Servicio no válido';
+            }
+            
+            // 4. Manejo del Formulario (Llamada a la nueva API)
+            const agendaForm = document.getElementById('agenda-form');
+            const formMessage = document.getElementById('form-message');
+
+            agendaForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // CRÍTICO: Verificar si el usuario está logueado (app.js ya debería redirigir)
+                if (localStorage.getItem('isLoggedIn') !== 'true') {
+                    displayMessage(formMessage, false, 'Debes iniciar sesión como cliente para solicitar una cita.');
+                    setTimeout(() => { window.location.href = '/ServiNet/pages/auth/login.html'; }, 2000);
+                    return;
+                }
+                
+                const submitBtn = document.getElementById('confirm-btn');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Solicitando...';
+                submitBtn.disabled = true;
+                
+                const formData = new FormData(agendaForm);
+                
+                try {
+                    const response = await fetch('/ServiNet/api/create_cita.php', {
+                        method: 'POST',
+                        body: formData 
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        displayMessage(formMessage, true, result.message);
+                        agendaForm.reset();
+                        
+                        setTimeout(() => {
+                            // Redirigir al historial después de agendar
+                             window.location.href = '/ServiNet/pages/dashboard/cliente/historial.html'; 
+                        }, 3000);
+
+                    } else {
+                        displayMessage(formMessage, false, '❌ Error al solicitar la cita: ' + result.message);
+                    }
+
+                } catch (error) {
+                    console.error('API Error:', error);
+                    displayMessage(formMessage, false, '❌ Error de conexión con el servidor. Intenta nuevamente.');
+                } finally {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

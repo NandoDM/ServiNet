@@ -1,0 +1,440 @@
+/* ======================================================= */
+/* === 1. BASE Y UTILIDADES GENERALES (HERO, NAV, ANIMACIONES) === */
+/* ======================================================= */
+
+/* Animaciones y texto degradado */
+.gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hover-lift:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+.fade-in { animation: fadeIn 0.8s ease-in-out; }
+.slide-up { animation: slideUp 0.6s ease-out; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animación de flotación (usada en Acerca-De) */
+.floating-animation { animation: float 3s ease-in-out infinite; }
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Hero Section (Imagen de fondo) */
+.hero-section {
+    background-image: url('/ServiNet/assets/img/fondoservinet.jpg'); 
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.hero-overlay { background: rgba(0, 0, 0, 0.4); }
+
+/* Layout y Navegación */
+.section-spacing { margin-top: 1rem; margin-bottom: 1rem; }
+.nav-height { height: 6rem; }
+.nav-logo { font-size: 2rem; }
+.nav-link { font-size: 1.125rem; padding: 1rem 1.25rem; }
+
+/* Ocultar elementos (usado por JS) */
+.logged-in-hide { display: none !important; }
+.cta-hide { display: none !important; }
+
+/* ======================================================= */
+/* === 2. ESTILOS DE AUTENTICACIÓN Y FORMULARIOS (BASE AZUL) === */
+/* ======================================================= */
+
+.login-container { min-height: calc(100vh - 140px); }
+.benefit-item { transition: all 0.3s ease; }
+.benefit-item:hover { transform: translateX(8px); }
+
+/* Toggle de Contraseña - CENTRALIZADO */
+.password-toggle {
+    position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #6b7280; cursor: pointer;
+    transition: color 0.3s ease; padding: 0.5rem;
+}
+.password-toggle:hover { color: #374151; }
+.input-with-toggle input { padding-right: 3rem !important; }
+
+/* --- ESTILOS DE FORMULARIO BASE (Cliente - Azul) --- */
+.form-section {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+.form-section:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.form-control {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+.form-control:focus { /* Foco Cliente (Azul) */
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+.form-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+}
+.form-error {
+    font-size: 0.875rem;
+    color: #ef4444;
+    margin-top: 0.5rem;
+}
+
+/* Indicador de Paso (Base Azul) */
+.step-indicator {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+.step-indicator.active {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
+    transform: scale(1.1);
+}
+.step-indicator:not(.active) {
+    background-color: #e5e7eb;
+    color: #6b7280;
+}
+.step-connector {
+    width: 80px;
+    height: 3px;
+    background-color: #e5e7eb;
+    margin: 0 1rem;
+}
+
+/* Botones Primarios (Base Azul) */
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
+    padding: 1.25rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+}
+.btn-primary:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+.btn-outline {
+    background: transparent;
+    color: #3b82f6;
+    padding: 1rem 2rem;
+    border: 2px solid #3b82f6;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-outline:hover {
+    background: #3b82f6;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Loading y Beneficios Cliente (Azul) */
+.auth-loading {
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.client-benefits {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+.client-benefits .benefit-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+}
+.client-benefits .benefit-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+/* ======================================================= */
+/* === 3. ESTILOS DE DASHBOARD Y PROFESIONAL (SOBREESCRITURA VERDE) === */
+/* ======================================================= */
+
+/* Fondo específico para el registro profesional */
+.professional-register-bg {
+    background: linear-gradient(135deg, #f0fdf4, #f3f4f6); /* green-50 a gray-100 */
+}
+
+/* Beneficios del Profesional (Verde) */
+.professional-benefits {
+    background: linear-gradient(135deg, #10b981, #34d399); /* green-600 a green-400 */
+    color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+/* No es necesario reescribir .benefit-item ni .benefit-icon ya que son idénticos a .client-benefits */
+
+/* Foco en Control de Formulario (Verde) */
+.form-control.professional-focus:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Indicador de Paso Activo (Verde) */
+.step-indicator.professional-active {
+    background: linear-gradient(135deg, #10b981, #34d399); /* green-600 a green-500 */
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Botón Primario (Verde) */
+.btn-professional-primary {
+    background: linear-gradient(135deg, #10b981, #34d399); /* green-600 a green-500 */
+    color: white;
+    padding: 1.25rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.btn-professional-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+}
+.btn-professional-primary:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+.btn-professional-outline {
+    background: transparent;
+    color: #10b981;
+    padding: 1rem 2rem;
+    border: 2px solid #10b981;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-professional-outline:hover {
+    background: #10b981;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Branding de Profesional (Verde) - Usado en dashboard/perfil */
+.professional-color { color: #10b981; /* green-600 */ }
+.professional-bg-active { background-color: #ecfdf5; color: #059669; font-weight: 600; }
+.professional-border { border-left: 4px solid #10b981; }
+/* Estilo de la barra lateral de los elementos de lista del profesional */
+.professional-border-left-2 { border-left: 4px solid #10b981; } /* Base verde */
+
+/* Estilos de Perfil */
+.profile-field-label { font-weight: 600; color: #374151; } /* gray-700 */
+
+/* Switch Toggle (Disponibilidad) */
+.slider { transition: .4s; }
+input:checked + .slider { background-color: #10b981; }
+input:checked + .slider:before { transform: translateX(26px); }
+
+/* Campos de Tarifa (reutilizado) */
+.tarifa-input { position: relative; }
+.tarifa-symbol {
+    position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+    color: #6b7280; font-weight: 600;
+}
+.tarifa-input .form-control { padding-left: 2.5rem; }
+
+
+/* ======================================================= */
+/* === 4. ESTILOS DE PÁGINAS ESTÁTICAS Y SERVICIOS === */
+/* ======================================================= */
+
+/* Estilos de Tarjeta (Usado en Contacto, Servicios, Acerca-De) */
+.card-hover { transition: all 0.3s ease; }
+.card-hover:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+}
+
+/* Acordeón FAQ (Consolidado) */
+.faq-container-box { box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); border-radius: 1.5rem; overflow: hidden; }
+.faq-item { border-bottom: 1px solid #e5e7eb; transition: background-color 0.3s ease; }
+.faq-item:last-child { border-bottom: none; }
+.faq-header { cursor: pointer; padding: 1.5rem; }
+.faq-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; padding: 0 1.5rem; }
+.faq-item.active .faq-content { max-height: 500px; padding-bottom: 1.5rem; padding-top: 0.5rem; }
+.faq-item.active .faq-icon { color: #8b5cf6; transform: rotate(180deg); }
+.faq-title { font-size: 1.125rem; font-weight: 600; }
+
+/* Estilos de Servicios (Catálogo) */
+.filter-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: transparent; }
+.service-card { transition: all 0.3s ease; border: 1px solid #e5e7eb; }
+.service-card:hover { 
+    transform: translateY(-4px); 
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); 
+    border-color: #3b82f6; 
+}
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Estilos de Páginas Legales */
+.content-section { padding: 2rem; border-bottom: 1px solid #e5e7eb; }
+.content-section:last-child { border-bottom: none; }
+
+/* Estados de Cita/Servicio (Consolidado) */
+/* Nota: Se mantiene el @apply para suponer compatibilidad con Tailwind/PostCSS */
+.status-completed { @apply bg-green-100 text-green-800; }
+.status-pending { @apply bg-yellow-100 text-yellow-800; }
+.status-cancelled { @apply bg-red-100 text-red-800; }
+.status-confirmed { @apply bg-blue-100 text-blue-800; }
+.status-active { @apply bg-green-100 text-green-800; }
+.status-paused { @apply bg-yellow-100 text-yellow-800; }
+
+/* --- ESTILOS DE SELECCIÓN DE CUENTA (seleccion-cuenta.html) --- */
+.account-card {
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+.account-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+}
+.client-card.selected {
+    border-color: #3b82f6; /* Azul */
+    box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.3);
+}
+.professional-card.selected {
+    border-color: #10b981; /* Verde */
+    box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.3);
+}
+.icon-container {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-size: 2.5rem;
+}
+.client-icon {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
+}
+.professional-icon {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: white;
+}
+.checkmark {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto 0;
+    color: transparent;
+    background: white;
+    transition: all 0.3s ease;
+}
+.client-card .checkmark.selected {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    transform: scale(1.1);
+}
+.professional-card .checkmark.selected {
+    background-color: #10b981;
+    border-color: #10b981;
+    color: white;
+    transform: scale(1.1);
+}
+.continue-btn {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    transition: all 0.3s ease;
+}
+.continue-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+}
+.continue-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Nota: Los estilos benefit-item, nav-height, nav-logo, nav-link ya deben estar en styles.css */

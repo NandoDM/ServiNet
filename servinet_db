@@ -1,0 +1,335 @@
+-- SERVINET - MODELO DE BASE DE DATOS (MySQL/MariaDB)
+-- Versión: FINAL CORREGIDA CON FOTOS Y PORTAFOLIO
+-- Autor: Gemini AI
+
+-- ======================================================
+-- 0. DESACTIVAR RESTRICCIONES DE SEGURIDAD (SOLUCIÓN ERROR #1451)
+-- ======================================================
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ======================================================
+-- 1. TABLAS BASE (CON MODIFICACIÓN DE FOTO DE PERFIL)
+-- ======================================================
+
+CREATE TABLE Cuenta (
+    id_cuenta INT PRIMARY KEY AUTO_INCREMENT,
+    correo VARCHAR(100) UNIQUE NOT NULL,
+    contraseña VARCHAR(255) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    apellido_paterno VARCHAR(100) NOT NULL,
+    apellido_materno VARCHAR(100),
+    telefono VARCHAR(20) UNIQUE,
+    foto_perfil_url VARCHAR(255) NULL, -- 🚨 MODIFICACIÓN 1: URL de la foto de perfil para todos los roles 🚨
+    municipio VARCHAR(100) DEFAULT NULL,
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
+    activo BOOLEAN DEFAULT TRUE,
+    INDEX idx_correo (correo),
+    INDEX idx_telefono (telefono)
+);
+
+CREATE TABLE Rol (
+    id_rol INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_rol VARCHAR(50) UNIQUE NOT NULL,
+    descripcion TEXT,
+    INDEX idx_nombre_rol (nombre_rol)
+);
+
+CREATE TABLE MunicipioPuebla (
+    id_municipio INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_municipio VARCHAR(100) UNIQUE NOT NULL,
+    estado VARCHAR(50) DEFAULT 'Puebla',
+    pais VARCHAR(50) DEFAULT 'México',
+    activo BOOLEAN DEFAULT TRUE,
+    INDEX idx_nombre_municipio (nombre_municipio)
+);
+
+CREATE TABLE CategoriaServicio (
+    id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_categoria VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    icono VARCHAR(50),
+    activa BOOLEAN DEFAULT TRUE,
+    INDEX idx_nombre_categoria (nombre_categoria)
+);
+
+CREATE TABLE MetodoPago (
+    id_metodo INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) UNIQUE NOT NULL,
+    descripcion TEXT
+);
+
+-- ======================================================
+-- 2. TABLAS SECUNDARIAS (Dependen de las tablas base)
+-- ======================================================
+
+CREATE TABLE CuentaRol (
+    id_cuenta INT NOT NULL,
+    id_rol INT NOT NULL,
+    fecha_asignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_cuenta, id_rol),
+    FOREIGN KEY (id_cuenta) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    FOREIGN KEY (id_rol) REFERENCES Rol(id_rol) ON DELETE CASCADE
+);
+
+CREATE TABLE PerfilProfesional (
+    id_profesional INT PRIMARY KEY AUTO_INCREMENT,
+    id_cuenta INT NOT NULL UNIQUE,
+    id_categoria_principal INT NULL,
+    especialidades VARCHAR(200),
+    experiencia TEXT, 
+    tarifa DECIMAL(10,2),
+    disponibilidad VARCHAR(100) DEFAULT 'Bajo Demanda', 
+    descripcion TEXT,
+    calificacion_promedio DECIMAL(3,2) DEFAULT 0.00,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    
+    nombre_negocio VARCHAR(150) NULL,
+    sitio_web VARCHAR(255) NULL,
+    estado_verificacion ENUM('pendiente','en_revision','verificado','rechazado') DEFAULT 'pendiente',
+    
+    FOREIGN KEY (id_cuenta) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    FOREIGN KEY (id_categoria_principal) REFERENCES CategoriaServicio(id_categoria) ON DELETE SET NULL,
+    INDEX idx_calificacion (calificacion_promedio)
+);
+
+-- 🚨 MODIFICACIÓN 2: Nueva tabla para el Portafolio/Galería de Trabajos 🚨
+CREATE TABLE PortafolioProfesional (
+    id_foto INT PRIMARY KEY AUTO_INCREMENT,
+    id_profesional INT NOT NULL,
+    url_imagen VARCHAR(255) NOT NULL,
+    descripcion VARCHAR(255) NULL,
+    fecha_subida DATETIME DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (id_profesional) REFERENCES PerfilProfesional(id_profesional) ON DELETE CASCADE
+);
+
+-- ======================================================
+-- 3. TABLAS DE PROCESO
+-- ======================================================
+
+CREATE TABLE Servicio (
+    id_servicio INT PRIMARY KEY AUTO_INCREMENT,
+    id_profesional INT NOT NULL,
+    id_categoria INT NOT NULL,
+    nombre_servicio VARCHAR(150) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10,2) NOT NULL,
+    duracion_minutos INT DEFAULT 60,
+    imagen_url VARCHAR(255) DEFAULT '/ServiNet/assets/img/default_service.webp', /* 🔑 CAMBIO CLAVE: Nueva URL de imagen */
+    disponible BOOLEAN DEFAULT TRUE,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_profesional) REFERENCES PerfilProfesional(id_profesional) ON DELETE CASCADE,
+    FOREIGN KEY (id_categoria) REFERENCES CategoriaServicio(id_categoria) ON DELETE CASCADE,
+    INDEX idx_categoria (id_categoria),
+    INDEX idx_disponible (disponible)
+);
+
+CREATE TABLE Cita (
+    id_cita INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT NOT NULL,
+    id_servicio INT NOT NULL,
+    fecha_hora DATETIME NOT NULL,
+    estado ENUM('pendiente','confirmada','cancelada','finalizada') DEFAULT 'pendiente',
+    comentario_cliente TEXT,
+    comentario_profesional TEXT,
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_cliente) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    FOREIGN KEY (id_servicio) REFERENCES Servicio(id_servicio) ON DELETE CASCADE,
+    INDEX idx_fecha_hora (fecha_hora),
+    INDEX idx_estado (estado)
+);
+
+CREATE TABLE Pago (
+    id_pago INT PRIMARY KEY AUTO_INCREMENT,
+    id_cita INT NOT NULL UNIQUE,
+    monto DECIMAL(10,2) NOT NULL,
+    metodo_pago VARCHAR(50), 
+    fecha_pago DATETIME,
+    estado_pago ENUM('pendiente','procesando','pagado','fallido','reembolsado') DEFAULT 'pendiente',
+    codigo_transaccion VARCHAR(100),
+    FOREIGN KEY (id_cita) REFERENCES Cita(id_cita) ON DELETE CASCADE,
+    INDEX idx_estado_pago (estado_pago),
+    INDEX idx_fecha_pago (fecha_pago)
+);
+
+CREATE TABLE TransaccionSegura (
+    id_transaccion INT PRIMARY KEY AUTO_INCREMENT,
+    id_pago INT NOT NULL,
+    id_cliente INT NOT NULL,
+    id_profesional INT NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    estado ENUM('retenido','liberado','en_disputa','reembolsado') DEFAULT 'retenido',
+    fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_liberacion DATETIME,
+    comentario TEXT,
+    FOREIGN KEY (id_pago) REFERENCES Pago(id_pago) ON DELETE CASCADE,
+    FOREIGN KEY (id_cliente) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    FOREIGN KEY (id_profesional) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    INDEX idx_estado (estado)
+);
+
+CREATE TABLE Reseña (
+    id_reseña INT PRIMARY KEY AUTO_INCREMENT,
+    id_cita INT NOT NULL UNIQUE,
+    calificacion INT NOT NULL CHECK (calificacion >= 1 AND calificacion <= 5),
+    comentario TEXT,
+    fecha_reseña DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_cita) REFERENCES Cita(id_cita) ON DELETE CASCADE,
+    INDEX idx_calificacion (calificacion)
+);
+
+CREATE TABLE Mensaje (
+    id_mensaje INT PRIMARY KEY AUTO_INCREMENT,
+    id_emisor INT NOT NULL,
+    id_receptor INT NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
+    estado_mensaje ENUM('enviado','recibido','leido') DEFAULT 'enviado',
+    FOREIGN KEY (id_emisor) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    FOREIGN KEY (id_receptor) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    INDEX idx_fecha_envio (fecha_envio)
+);
+
+CREATE TABLE Notificacion (
+    id_notificacion INT PRIMARY KEY AUTO_INCREMENT,
+    id_cuenta INT NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
+    leido BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (id_cuenta) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    INDEX idx_leido (leido),
+    INDEX idx_fecha_envio (fecha_envio)
+);
+
+CREATE TABLE Sesion (
+    id_sesion INT PRIMARY KEY AUTO_INCREMENT,
+    id_cuenta INT NOT NULL,
+    ip_acceso VARCHAR(45),
+    fecha_acceso DATETIME DEFAULT CURRENT_TIMESTAMP,
+    dispositivo VARCHAR(100),
+    token_sesion VARCHAR(255),
+    activa BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (id_cuenta) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    INDEX idx_fecha_acceso (fecha_acceso)
+);
+
+CREATE TABLE Recuperacion (
+    id_recuperacion INT PRIMARY KEY AUTO_INCREMENT,
+    id_cuenta INT NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    fecha_solicitud DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_expiracion DATETIME,
+    estado_token ENUM('activo','usado','expirado') DEFAULT 'activo',
+    FOREIGN KEY (id_cuenta) REFERENCES Cuenta(id_cuenta) ON DELETE CASCADE,
+    INDEX idx_token (token),
+    INDEX idx_estado (estado_token)
+);
+
+CREATE TABLE Disputa (
+    id_disputa INT PRIMARY KEY AUTO_INCREMENT,
+    id_transaccion INT NOT NULL,
+    iniciada_por ENUM('cliente','profesional') NOT NULL,
+    motivo TEXT NOT NULL,
+    evidencia_url VARCHAR(255),
+    estado ENUM('abierta','en_revision','resuelta','cancelada') DEFAULT 'abierta',
+    fecha_inicio DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_resolucion DATETIME,
+    resolucion TEXT,
+    FOREIGN KEY (id_transaccion) REFERENCES TransaccionSegura(id_transaccion) ON DELETE CASCADE,
+    INDEX idx_estado (estado)
+);
+
+-- ======================================================
+-- 4. DATOS INICIALES Y CATÁLOGOS (INSERTS)
+-- ======================================================
+
+-- Insertar roles del sistema
+INSERT INTO Rol (id_rol, nombre_rol, descripcion) VALUES 
+(1, 'cliente', 'Usuario que contrata servicios'),
+(2, 'profesional', 'Usuario que ofrece servicios'),
+(3, 'admin', 'Administrador del sistema'),
+(4, 'gerente', 'Gerente con permisos limitados');
+
+-- Insertar categorías de servicios
+INSERT INTO CategoriaServicio (id_categoria, nombre_categoria, descripcion, icono) VALUES 
+(1, 'Hogar', 'Servicios para el hogar y reparaciones', 'fas fa-home'),
+(2, 'Automotriz', 'Servicios para vehículos', 'fas fa-car'),
+(3, 'Tecnología', 'Servicios tecnológicos y desarrollo', 'fas fa-laptop'),
+(4, 'Salud', 'Servicios de salud y bienestar', 'fas fa-heartbeat'),
+(5, 'Fotografía', 'Servicios de fotografía y video', 'fas fa-camera'),
+(6, 'Educación', 'Servicios educativos y tutorías', 'fas fa-graduation-cap'),
+(7, 'Belleza', 'Servicios de belleza y cuidado personal', 'fas fa-spa'),
+(8, 'Diseño', 'Servicios de diseño gráfico y web', 'fas fa-palette');
+
+-- Insertar métodos de pago 
+INSERT INTO MetodoPago (id_metodo, nombre, descripcion) VALUES 
+(1, 'Tarjeta de Crédito', 'Pago con tarjeta de crédito'),
+(2, 'Tarjeta de Débito', 'Pago con tarjeta de débito'),
+(3, 'PayPal', 'Pago a través de PayPal'),
+(4, 'Transferencia Bancaria', 'Transferencia bancaria directa');
+
+-- Crear usuario administrador por defecto (Contraseña: Kiwi1234)
+INSERT INTO Cuenta (id_cuenta, correo, contraseña, nombre, apellido_paterno, telefono, municipio) VALUES 
+(1, 'admin@servinet.com', '$2y$10$fV2F0V5E5fW.S4k3.Gj9jOi0uO0I.Iq0o0.u0I0Q.u0I0Q.', 'Administrador', 'Sistema', '1234567890', 'Puebla');
+
+-- Asignar rol de admin
+INSERT INTO CuentaRol (id_cuenta, id_rol) VALUES 
+(1, 3); -- admin
+
+-- 🚨 INSERCIÓN CORREGIDA DE LOS 217 MUNICIPIOS DE PUEBLA (Solución a Error #1062) 🚨
+INSERT INTO MunicipioPuebla (nombre_municipio) VALUES 
+('Acajete'), ('Acateno'), ('Acatlán'), ('Acatzingo'), ('Acteopan'), ('Ahuacatlán'), 
+('Ahuatlán'), ('Ahuazotepec'), ('Ahuehuetitla'), ('Ajalpan'), ('Albino Zertuche'), 
+('Aljojuca'), ('Altepexi'), ('Amixtlán'), ('Amozoc'), ('Aquixtla'), ('Atempan'), 
+('Atexcal'), ('Atlixco'), ('Atoyatempan'), ('Atzala'), ('Atzitzihuacán'), 
+('Atzitzintla'), ('Axutla'), ('Ayotoxco de Guerrero'), ('Calpan'), ('Caltepec'), 
+('Camocuautla'), ('Cañada Morelos'), ('Caxhuacan'), ('Chalchicomula de Sesma'), 
+('Chapulco'), ('Chiautla'), ('Chiautzingo'), ('Chichiquila'), ('Chietla'), 
+('Chigmecatitlán'), ('Chignahuapan'), ('Chignautla'), ('Chila'), ('Chila de la Sal'), 
+('Chilchotla'), ('Chiltepín'), ('Chinantla'), ('Coatepec'), ('Coatzingo'), 
+('Cohetzala'), ('Cohuecán'), ('Coronango'), ('Coxcatlán'), ('Cuapiaxtla de Madero'), 
+('Cuautempan'), ('Cuautinchán'), ('Cuautlancingo'), ('Cuayuca de Andrade'), 
+('Cuetzalan del Progreso'), ('Cuyoaco'), ('Domingo Arenas'), ('Eloxochitlán'), 
+('Epatlán'), ('Esperanza'), ('Francisco Z. Mena'), ('General Felipe Ángeles'), 
+('Guadalupe'), ('Guadalupe Victoria'), ('Hermenegildo Galeana'), ('Honey'), 
+('Huatlatlauca'), ('Huauchinango'), ('Huehuetla'), ('Huehuetlán el Chico'), 
+('Huehuetlán el Grande'), ('Huejotzingo'), ('Hueyapan'), ('Hueytamalco'), 
+('Hueytlalpan'), ('Huitzilan de Serdán'), ('Ixcamilpa de Guerrero'), 
+('Ixcaquixtla'), ('Ixtacamaxtitlán'), ('Ixtepec'), ('Izúcar de Matamoros'), 
+('Jalpan'), ('Jolalpan'), ('Jonotla'), ('Jopala'), ('Juan C. Bonilla'), 
+('Juan Galindo'), ('Juan N. Méndez'), ('Junto a la Cabecera'), ('La Magdalena Tlatlauquitepec'), 
+('Lafragua'), ('Libres'), ('Los Reyes de Juárez'), ('Mazapiltepec de Juárez'), 
+('Mixtla'), ('Molcaxac'), ('Naupan'), ('Nauzontla'), ('Nealtican'), 
+('Nicolás Bravo'), ('Nopalucan'), ('Ocotepec'), ('Ocoyucan'), ('Olintla'), 
+('Oriental'), ('Pahuatlán'), ('Palmar de Bravo'), ('Pantepec'), ('Petlalcingo'), 
+('Piaxtla'), ('Puebla'), ('Quecholac'), ('Quimixtlán'), ('Rafael Lara Grajales'), 
+('San Andrés Cholula'), ('San Antonio Cañada'), ('San Diego la Mesa Tochimiltzingo'), 
+('San Felipe Teotlalcingo'), ('San Felipe Tepatlán'), ('San Gabriel Chilac'), 
+('San Gregorio Atzompa'), ('San Jerónimo Xayacatlán'), ('San José Chiapa'), 
+('San José Miahuatlán'), ('San Juan Atzompa'), ('San Juan Epatlán'), 
+('San Juan Ixcaquixtla'), ('San Lorenzo Axocomanitla'), ('San Matías Tlalancaleca'), 
+('San Miguel Ixitlán'), ('San Miguel Xoxtla'), ('San Nicolás Buenos Aires'), 
+('San Nicolás de los Ranchos'), ('San Pablo Anicano'), ('San Pedro Cholula'), 
+('San Pedro Yeloixtlahuaca'), ('San Salvador el Seco'), ('San Salvador Huixcolotla'), 
+('San Sebastián Tlacotepec'), ('Santa Catarina Tlaltempan'), ('Santa Inés Ahuatempan'), 
+('Santiago Miahuatlán'), ('Santiago Zautla'), ('Soltepec'), ('Tecali de Herrera'), 
+('Tecamachalco'), ('Tecomatlán'), ('Tehuitzingo'), ('Tenampulco'), ('Teopantlán'), 
+('Teotlalco'), ('Tepanco de López'), ('Tepetzintla'), ('Tepeyahualco'), 
+('Tepeyahualco de Cuauhtémoc'), ('Tepexco'), ('Tepexi de Rodríguez'), 
+('Tepinapa'), ('Teresa de Jesús'), ('Tetela de Ocampo'), 
+('Teteletlan'), ('Tetzicatlán'), ('Teziutlán'), ('Tianguismanalco'), ('Tilapa'), 
+('Tlachichuca'), ('Tlacotepec de Benito Juárez'), ('Tlacuilotepec'), ('Tlahuapan'), 
+('Tlanepantla'), ('Tlaola'), ('Tlaquilpa'), ('Tlatlauquitepec'), ('Tlaxco'), 
+('Tochimilco'), ('Tochtepec'), ('Totoltepec de Guerrero'), ('Tulcingo'), 
+('Tuzamapán de Juárez'), ('Tzicatlacoyan'), ('Venustiano Carranza'), ('Vicente Guerrero'), 
+('Xayacatlán de Bravo'), ('Xicotepec de Juárez'), ('Xicotlán'), ('Xochiapulco'), 
+('Xochiltepec'), ('Xochitlán de Vicente Suárez'), ('Xochitlán Todos Santos'), 
+('Yauhtepec'), ('Yecuatla'), ('Yehualtepec'), ('Zacapala'), ('Zacapoaxtla'), 
+('Zaragoza'), ('Zautla'), ('Zihuateutla'), ('Zinacatepec'), ('Zongozotla'), 
+('Zoquiapan'), ('Zoquitlán');
+
+-- ======================================================
+-- 5. RE-ESTABLECER RESTRICCIONES
+-- ======================================================
+SET FOREIGN_KEY_CHECKS = 1;

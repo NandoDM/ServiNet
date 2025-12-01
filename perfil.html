@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Profesional - ServiNet</title>
+    <meta name="description" content="Gestiona y edita tu información personal, detalles profesionales, y documentos de verificación en ServiNet.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+    
+    <style>
+        .form-label {
+            display: block;
+            font-size: 0.875rem; 
+            font-weight: 500; 
+            color: #374151; 
+            margin-bottom: 0.25rem;
+        }
+        .form-input {
+            margin-top: 0.25rem;
+            display: block;
+            width: 100%;
+            border-width: 1px;
+            border-color: #D1D5DB;
+            border-radius: 0.375rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            padding: 0.5rem;
+        }
+        /* Estilos específicos para la gestión del portafolio */
+        .portfolio-image-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .portfolio-image-card:hover .delete-overlay {
+            opacity: 1;
+        }
+        .delete-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div id="header-container"></div>
+    
+    <main class="min-h-screen py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-10 bg-white p-6 rounded-lg shadow-md professional-border">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-user-circle professional-color mr-3"></i>
+                    Mi Perfil Profesional
+                </h1>
+                <p class="text-gray-500 mt-2">
+                    Edita y actualiza tu información personal y los detalles de tus servicios. Bienvenido, <span id="display-nombre-completo" class="font-semibold">Cargando...</span>
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div id="dashboard-nav-container"></div>
+                
+                <div class="md:col-span-2 space-y-8">
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center">
+                        <h2 class="text-2xl font-bold text-gray-700 mb-6 flex items-center">
+                            <i class="fas fa-camera professional-color mr-2"></i> Foto de Perfil
+                        </h2>
+                        <div id="prof-avatar-container" class="h-32 w-32 rounded-full overflow-hidden flex items-center justify-center bg-gray-200 text-gray-700 text-5xl font-semibold relative border-4 border-white shadow-lg">
+                            </div>
+                        
+                        <label for="photo-input" class="mt-4 cursor-pointer professional-color hover:text-green-800 font-medium transition duration-150 ease-in-out">
+                            <i class="fas fa-camera mr-2"></i> Subir/Cambiar Foto
+                        </label>
+                        <input type="file" id="photo-input" class="hidden" accept="image/png, image/jpeg">
+                        
+                        <div id="photo-message" class="hidden mt-2 p-3 text-sm rounded w-full text-center max-w-sm"></div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-6 border-b pb-4">
+                            <h2 class="text-2xl font-bold text-gray-700 flex items-center">
+                                <i class="fas fa-id-badge professional-color mr-2"></i> Información de Contacto
+                            </h2>
+                        </div>
+                        
+                        <form id="personal-info-form">
+                            <div class="mb-6">
+                                <label class="form-label">Correo Electrónico (No editable)</label>
+                                <p class="mt-1 text-lg text-gray-500" id="display-email">Cargando...</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="col-span-1">
+                                    <label for="nombre" class="form-label">Nombre(s)</label>
+                                    <input type="text" id="nombre" name="nombre" required class="form-input">
+                                </div>
+                                <div class="col-span-1">
+                                    <label for="apellido_paterno" class="form-label">Apellido Paterno</label>
+                                    <input type="text" id="apellido_paterno" name="apellido_paterno" required class="form-input">
+                                </div>
+                                <div class="col-span-1">
+                                    <label for="apellido_materno" class="form-label">Apellido Materno</label>
+                                    <input type="text" id="apellido_materno" name="apellido_materno" class="form-input">
+                                </div>
+                                <div class="col-span-1">
+                                    <label for="telefono" class="form-label">Teléfono (10 dígitos)</label>
+                                    <input type="text" id="telefono" name="telefono" required pattern="\d{10}" title="Debe contener 10 dígitos." class="form-input">
+                                </div>
+                                <div class="col-span-2">
+                                    <label for="municipio" class="form-label">Ubicación (Municipio)</label>
+                                    <select id="municipio" name="municipio" required class="form-input">
+                                        <option value="">Cargando municipios...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div id="personal-info-message" class="mt-4 p-3 rounded-md hidden text-sm"></div>
+                            
+                            <div class="mt-6 flex justify-end">
+                                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md shadow-md hover:opacity-90 transition">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-6 border-b pb-4">
+                            <h2 class="text-2xl font-bold text-gray-700 flex items-center">
+                                <i class="fas fa-briefcase professional-color mr-2"></i> Perfil Profesional
+                            </h2>
+                        </div>
+
+                        <form id="professional-details-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="col-span-1">
+                                    <label for="especialidades" class="form-label">Especialidad Principal (Palabras clave)</label>
+                                    <input type="text" id="especialidades" name="especialidades" required class="form-input" placeholder="Ej: Electricista Certificado, Plomería">
+                                </div>
+                                <div class="col-span-1">
+                                    <label for="experiencia" class="form-label">Años de Experiencia</label>
+                                    <input type="number" id="experiencia" name="experiencia" min="0" required class="form-input">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="descripcion" class="form-label">Descripción / Biografía</label>
+                                    <textarea id="descripcion" name="descripcion" rows="4" required class="form-input" placeholder="Describe brevemente tu experiencia y servicios ofrecidos."></textarea>
+                                </div>
+                            </div>
+                            
+                            <div id="professional-details-message" class="mt-4 p-3 rounded-md hidden text-sm"></div>
+
+                            <div class="mt-6 flex justify-end">
+                                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md shadow-md hover:opacity-90 transition">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="flex justify-between items-center mb-6 border-b pb-4">
+                            <h2 class="text-2xl font-bold text-gray-700 flex items-center">
+                                <i class="fas fa-camera-retro professional-color mr-2"></i> Gestión de Portafolio
+                            </h2>
+                        </div>
+
+                        <form id="portfolio-upload-form">
+                            <div class="mb-4">
+                                <label for="portfolio_photo" class="form-label">Subir Foto de Trabajo *</label>
+                                <input type="file" id="portfolio_photo" name="portfolio_photo" required accept="image/png, image/jpeg" class="form-input">
+                            </div>
+                            <div class="mb-4">
+                                <label for="photo_description" class="form-label">Descripción del Trabajo (Opcional)</label>
+                                <input type="text" id="photo_description" name="photo_description" maxlength="200" class="form-input" placeholder="Ej: Proyecto de instalación eléctrica completado.">
+                            </div>
+                            
+                            <div id="portfolio-message" class="mt-4 p-3 rounded-md hidden text-sm"></div>
+                            
+                            <div class="mt-6 flex justify-end">
+                                <button type="submit" id="upload-portfolio-btn" class="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:opacity-90 transition">
+                                    <i class="fas fa-upload mr-2"></i> Subir a Portafolio
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-8 border-t pt-4">
+                            <h3 class="text-xl font-bold text-gray-700 mb-4">Mis Trabajos Subidos</h3>
+                            <div id="portfolio-list-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <p class="text-gray-500 col-span-full">Cargando fotos...</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <div class="mt-8 border-t pt-4">
+                            <h3 class="text-xl font-bold text-gray-700 flex items-center mb-4">
+                                <i class="fas fa-shield-alt professional-color mr-2"></i> Verificación
+                            </h3>
+                            <div class="flex items-center justify-between bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <p class="text-yellow-700 font-medium">Documentación de ID y Experiencia: **PENDIENTE**</p>
+                                <button class="bg-blue-600 text-white py-2 px-4 text-sm rounded-md hover:bg-blue-700 transition">
+                                     Subir Documentos
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                         <div class="flex justify-between items-center mb-6 border-b pb-4">
+                            <h2 class="text-2xl font-bold text-gray-700 flex items-center">
+                                <i class="fas fa-lock professional-color mr-2"></i> Seguridad de Cuenta
+                            </h2>
+                        </div>
+                        <p class="text-gray-600 mb-4">Mantén tu cuenta segura actualizando tu contraseña periódicamente.</p>
+                        <button type="button" id="open-password-modal" class="bg-red-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-red-700 transition">
+                            Cambiar Contraseña
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <div id="password-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4">Cambiar Contraseña</h3>
+            <form id="password-form">
+                <div class="mb-4">
+                    <label for="current_password_modal" class="form-label">Contraseña Actual</label>
+                    <input type="password" id="current_password_modal" name="current_password" required
+                           class="form-input">
+                </div>
+                <div class="mb-4">
+                    <label for="new_password_modal" class="form-label">Nueva Contraseña</label>
+                    <input type="password" id="new_password_modal" name="new_password" required
+                           class="form-input">
+                </div>
+                <div class="mb-6">
+                    <label for="confirm_password_modal" class="form-label">Confirmar Nueva Contraseña</label>
+                    <input type="password" id="confirm_password_modal" name="confirm_password" required
+                           class="form-input">
+                </div>
+                <div id="password-message" class="mb-4 p-3 rounded-md hidden text-sm"></div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="close-password-modal"
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                        Actualizar Contraseña
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="/ServiNet/assets/js/app.js"></script> 
+    <script src="/ServiNet/assets/js/register_utils.js"></script>
+    <script src="/ServiNet/assets/js/perfil_profesional_edit.js"></script>
+</body>
+</html>

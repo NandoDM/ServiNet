@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Agenda - ServiNet</title>
+    <meta name="description" content="Gestión de citas y disponibilidad para profesionales. Revisa, confirma o cancela tus servicios agendados.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+    
+</head>
+<body class="bg-gray-100">
+    
+    <div id="header-container"></div>
+    
+    <main class="min-h-screen py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-10 bg-white p-6 rounded-lg shadow-md professional-border">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-calendar-check professional-color mr-3"></i>
+                    Mi Agenda y Citas
+                </h1>
+                <p class="text-gray-500 mt-2">Gestiona tu disponibilidad y tus próximos servicios agendados.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div id="dashboard-nav-container"></div>
+                
+                <div class="md:col-span-2 space-y-6">
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold mb-4 text-gray-700 flex items-center">
+                            <i class="fas fa-list-ul professional-color mr-2"></i> Próximos Servicios
+                        </h2>
+                        
+                        <div id="citas-list-container" class="space-y-4">
+                            <div class="text-center text-gray-500">
+                                <i class="fas fa-spinner fa-spin mr-2"></i> Cargando citas desde la base de datos...
+                            </div>
+                        </div>
+                        </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold mb-4 text-gray-700 flex items-center">
+                            <i class="fas fa-toggle-on professional-color mr-2"></i> Estado de Disponibilidad
+                        </h2>
+                        <p class="text-gray-600 mb-4">Controla si tu perfil aparece en las búsquedas de los clientes. (Funcionalidad de guardado requiere API adicional)</p>
+                        
+                        <div id="availability-status-container" class="flex items-center justify-between bg-green-50 p-4 rounded-md border border-green-200">
+                            <span id="availability-status-text" class="font-semibold text-green-700">Actualmente, tu perfil está: **DISPONIBLE**</span>
+                            <label class="switch relative inline-block w-14 h-8">
+                                <input type="checkbox" checked class="opacity-0 w-0 h-0" id="availabilityToggle">
+                                <span class="slider round absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-green-600 rounded-full before:absolute before:content-[''] before:h-6 before:w-6 before:left-1 before:bottom-1 before:bg-white before:rounded-full before:transition-all before:duration-400"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <div id="dispute-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center text-red-600">
+                <i class="fas fa-balance-scale-right mr-2"></i> Reportar Disputa
+            </h3>
+            <p class="text-gray-600 mb-4">Describe la razón del conflicto para que el administrador inicie la mediación. (Cita #<span id="dispute-cita-id"></span>)</p>
+            
+            <form id="dispute-form">
+                <input type="hidden" id="dispute-target-cita-id" name="cita_id">
+                <input type="hidden" id="dispute-iniciada-por" name="iniciada_por">
+
+                <div class="mb-6">
+                    <label for="dispute-motivo" class="form-label">Motivo del Reporte *</label>
+                    <textarea id="dispute-motivo" name="motivo" rows="4" required
+                              class="w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Ej: Cliente se niega a liberar el pago, Disputa por costo adicional."></textarea>
+                </div>
+                
+                <div id="dispute-message" class="mb-4 p-3 rounded-md hidden text-sm"></div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="document.getElementById('dispute-modal').classList.add('hidden');"
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="submit-dispute-btn"
+                            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                        <i class="fas fa-gavel mr-1"></i> Iniciar Mediación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/ServiNet/assets/js/app.js"></script>
+    <script src="/ServiNet/assets/js/agenda_profesional.js"></script> 
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Listener para cerrar el modal al hacer clic fuera
+            const disputeModal = document.getElementById('dispute-modal');
+            if (disputeModal) {
+                 disputeModal.addEventListener('click', (e) => {
+                     if (e.target === disputeModal) {
+                         disputeModal.classList.add('hidden');
+                         disputeModal.classList.remove('flex');
+                     }
+                 });
+            }
+            
+            // Listener de Envío de Disputa (para el Profesional)
+            document.getElementById('dispute-form')?.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const form = this;
+                const submitBtn = document.getElementById('submit-dispute-btn');
+                const originalText = submitBtn.innerHTML;
+                const disputeMessage = document.getElementById('dispute-message');
+
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+                submitBtn.disabled = true;
+
+                const formData = new FormData(form);
+                
+                try {
+                    const response = await fetch('/ServiNet/api/create_disputa.php', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        displayMessage(disputeMessage, true, result.message);
+                        form.reset();
+                        
+                        setTimeout(() => {
+                            document.getElementById('dispute-modal').classList.add('hidden');
+                            window.loadProfessionalAgenda(); // Recargar agenda
+                        }, 1500);
+                    } else {
+                        displayMessage(disputeMessage, false, '❌ Error: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error("Error de conexión:", error);
+                    displayMessage(disputeMessage, false, 'Error de conexión con el servidor.');
+                } finally {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+                
+                // Función auxiliar local para el modal de disputa
+                function displayMessage(element, success, message) {
+                    element.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700');
+                    if (success) {
+                        element.classList.add('bg-green-100', 'text-green-700');
+                        element.classList.remove('bg-red-100', 'text-red-700');
+                    } else {
+                        element.classList.add('bg-red-100', 'text-red-700');
+                        element.classList.remove('bg-green-100', 'text-green-700');
+                    }
+                    element.innerHTML = message;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

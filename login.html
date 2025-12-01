@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - ServiNet</title>
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+    
+</head>
+<body class="bg-gray-50">
+    
+    <div id="header-container"></div>
+
+    <section class="login-container py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                
+                <div class="bg-white rounded-2xl shadow-lg p-8 lg:p-12">
+                    <div class="text-center mb-8">
+                        <div class="flex justify-center items-center mb-4">
+                            <img src="/ServiNet/assets/img/logo.png" alt="ServiNet Logo" class="w-12 h-10 object-contain mr-3">
+                            <h1 class="text-3xl lg:text-4xl font-bold text-gray-900">ServiNet</h1>
+                        </div>
+                        <h2 class="text-2xl lg:text-3xl font-semibold text-gray-700 mb-6">Iniciar Sesión</h2>
+                        <p class="text-gray-600 text-lg">
+                            Accede a tu cuenta de ServiNet
+                        </p>
+                    </div>
+
+                    <div class="relative mb-8">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">Iniciar Sesión con ServiNet</span>
+                        </div>
+                    </div>
+
+                    <form id="loginForm" class="space-y-6">
+                        <div>
+                            <label for="correo" class="block text-sm font-medium text-gray-700 mb-2">
+                                Correo Electrónico *
+                            </label>
+                            <input 
+                                type="email" 
+                                id="correo" 
+                                name="correo"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                placeholder="tu@email.com"
+                            >
+                        </div>
+
+                        <div class="relative input-with-toggle">
+                            <label for="contrasena" class="block text-sm font-medium text-gray-700 mb-2">
+                                Contraseña *
+                            </label>
+                            <input 
+                                type="password" 
+                                id="contrasena" 
+                                name="contrasena"
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                placeholder="Tu contraseña"
+                            >
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-600">Recordarme</span>
+                            </label>
+                            <a href="/ServiNet/pages/auth/recuperacion.html" class="text-sm text-blue-600 hover:text-blue-500">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+
+                        <button 
+                            type="submit"
+                            class="w-full bg-blue-600 text-white py-4 rounded-xl hover:bg-blue-700 transition font-semibold text-lg shadow-lg transform hover:scale-105 transition-transform"
+                        >
+                            Iniciar Sesión
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-8 pt-6 border-t border-gray-200">
+                        <p class="text-gray-600 mb-4">
+                            ¿No tienes una cuenta?
+                        </p>
+                        <a href="/ServiNet/pages/auth/seleccion-cuenta.html" class="inline-flex items-center justify-center px-8 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-xl hover:bg-blue-600 hover:text-white transition-all">
+                            Crear cuenta nueva
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-8">
+                        <p class="text-sm text-gray-500">
+                            Al iniciar sesión, aceptas nuestros 
+                            <a href="/ServiNet/pages/terminos-servicio.html" class="text-blue-600 hover:underline">términos de servicio</a> 
+                            y <a href="/ServiNet/pages/politica-privacidad.html" class="text-blue-600 hover:underline">política de privacidad</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl shadow-lg p-8 lg:p-12 text-white">
+                    <h3 class="text-2xl lg:text-3xl font-bold mb-8 text-center">
+                        Con tu cuenta de ServiNet puedes:
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="benefit-item flex items-start">
+                            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-calendar-check text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">Gestionar servicios y citas</h4>
+                                <p class="text-blue-100 text-sm">Organiza tus citas y servicios de manera eficiente</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item flex items-start">
+                            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-tachometer-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">Acceder a tu panel personalizado</h4>
+                                <p class="text-blue-100 text-sm">Interfaz adaptada a tus necesidades específicas</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item flex items-start">
+                            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-users text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">Conectar con profesionales verificados</h4>
+                                <p class="text-blue-100 text-sm">Accede a una red de profesionales confiables</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item flex items-start">
+                            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-star text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">Calificar y recibir reseñas</h4>
+                                <p class="text-blue-100 text-sm">Sistema transparente de calificaciones</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item flex items-start">
+                            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center mr-4 mt-1">
+                                <i class="fas fa-shield-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-1">Pagos seguros</h4>
+                                <p class="text-blue-100 text-sm">Transacciones protegidas y confiables</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 text-center">
+                        <div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-lock text-white text-2xl"></i>
+                        </div>
+                        <p class="text-blue-100 text-sm">
+                            Tu información está protegida con encriptación de última generación
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script src="/ServiNet/assets/js/app.js"></script>
+    <script src="/ServiNet/assets/js/login.js"></script>
+</body>
+</html>
+    
+</body>
+</html>

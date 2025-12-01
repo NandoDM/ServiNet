@@ -1,0 +1,110 @@
+<div class="relative inline-block text-left" id="user-menu-dropdown-container">
+    
+    <div>
+        <button type="button" class="inline-flex justify-center items-center w-full rounded-full border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+            <div id="user-initials-container" class="h-8 w-8 rounded-full flex items-center justify-center bg-blue-600 text-white mr-2 font-semibold overflow-hidden">
+                <span id="user-initials">U</span>
+            </div>
+            <span id="user-name-display" class="hidden sm:inline">Usuario</span>
+            <i class="fas fa-chevron-down -mr-1 ml-2 h-4 w-4"></i>
+        </button>
+    </div>
+
+    <div id="user-menu-dropdown" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 hidden z-50" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+        
+        <div class="py-1" role="none">
+            <div class="px-4 py-2 text-sm text-gray-700 font-semibold" id="user-role-display">Rol: N/A</div>
+        </div>
+
+        <div class="py-1 hidden" role="none" id="admin-options">
+            <a href="#" id="admin-dashboard-link" class="text-red-600 block px-4 py-2 text-sm hover:bg-red-50" role="menuitem" tabindex="-1">
+                <i class="fas fa-user-shield mr-2 w-5"></i>
+                <span>Panel de Administración</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/admin/usuarios.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-users-cog mr-2 w-5"></i>
+                <span>Gestión de Usuarios</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/admin/disputas.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-balance-scale-right mr-2 w-5"></i>
+                <span>Disputas</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/admin/transacciones.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-money-bill-wave mr-2 w-5"></i>
+                <span>Transacciones</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/admin/servicios.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-cogs mr-2 w-5"></i>
+                <span>Gestión de Servicios</span>
+            </a>
+        </div>
+
+
+        <div class="py-1" role="none" id="client-options">
+            <a href="/ServiNet/pages/dashboard/cliente/index.html" id="dashboard-link" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-columns mr-2 w-5"></i>
+                <span>Mi Dashboard</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/cliente/perfil.html" id="client-perfil-link" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-user-circle mr-2 w-5"></i>
+                <span>Mi Perfil</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/cliente/historial.html" id="client-historial-link" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-history mr-2 w-5"></i>
+                <span>Historial</span>
+            </a>
+        </div>
+        
+        <div class="py-1 hidden" role="none" id="professional-options">
+            <a href="/ServiNet/pages/dashboard/profesional/index.html" id="prof-dashboard-link" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-chart-bar mr-2 w-5"></i>
+                <span>Resumen</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/profesional/agenda.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-calendar-check mr-2 w-5"></i>
+                <span>Mi Agenda / Citas</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/profesional/servicios.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-tools mr-2 w-5"></i>
+                <span>Mis Servicios</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/profesional/ingresos.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-money-bill-wave mr-2 w-5"></i>
+                <span>Ingresos</span>
+            </a>
+            <a href="/ServiNet/pages/dashboard/profesional/perfil.html" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                <i class="fas fa-user-circle mr-2 w-5"></i>
+                <span>Mi Perfil</span>
+            </a>
+        </div>
+
+        <div class="py-1" role="none">
+            <button id="logout-button" class="text-red-600 w-full text-left block px-4 py-2 text-sm hover:bg-red-50" role="menuitem" tabindex="-1">
+                <i class="fas fa-sign-out-alt mr-2 w-5"></i>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ESTE SCRIPT ES SOLO PARA EL TOGGLE DEL DROPDOWN.
+    (function() {
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+
+        if (userMenuButton && userMenuDropdown) {
+            userMenuButton.addEventListener('click', function() {
+                userMenuDropdown.classList.toggle('hidden');
+                userMenuButton.setAttribute('aria-expanded', userMenuDropdown.classList.contains('hidden') ? 'false' : 'true');
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!userMenuDropdown.contains(event.target) && !userMenuButton.contains(event.target)) {
+                    userMenuDropdown.classList.add('hidden');
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    })();
+</script>

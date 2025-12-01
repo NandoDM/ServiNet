@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes (FAQ) - ServiNet</title>
+    <meta name="description" content="Encuentra respuestas rápidas a las preguntas más comunes sobre cómo usar ServiNet, la verificación de profesionales y los pagos.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    
+    <div id="header-container"></div>
+    
+    <main class="flex-grow">
+        
+        <section class="bg-cover bg-center bg-no-repeat py-20 relative overflow-hidden" style="background-image: url('/ServiNet/assets/img/fondoservinet.jpg');">
+            <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+            <div class="max-w-4xl mx-auto px-4 relative z-10">
+                <div class="text-center text-white">
+                    <h1 class="text-4xl md:text-6xl font-extrabold mb-4">
+                        Centro de Respuestas ServiNet
+                    </h1>
+                    <p class="text-white text-lg md:text-xl max-w-2xl mx-auto">
+                        Encuentra la información detallada que necesitas para usar nuestra plataforma.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-24">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="bg-white faq-container-box">
+                    
+                    <div class="bg-purple-600 text-white p-5 flex items-center space-x-3" style="background: linear-gradient(135deg, #a78bfa, #8b5cf6);">
+                        <i class="fas fa-question-circle text-xl"></i>
+                        <h2 class="text-xl font-bold">
+                            Preguntas Frecuentes Detalladas
+                        </h2>
+                    </div>
+
+                    <div id="faq-accordion">
+                        
+                        <div class="p-6 bg-gray-50 border-b border-t border-gray-200">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-users-cog mr-3 text-blue-600"></i> CUENTAS Y REGISTRO
+                            </h3>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-header flex justify-between items-center">
+                                <span class="faq-title flex items-center text-gray-900">
+                                    <i class="fas fa-user-plus mr-3 text-blue-500"></i>
+                                    ¿Cuál es la diferencia entre una cuenta de Cliente y Profesional?
+                                </span>
+                                <i class="fas fa-chevron-down text-purple-400 faq-icon transition-transform duration-300"></i>
+                            </div>
+                            <div class="faq-content text-gray-600">
+                                <p>
+                                    La **Cuenta Cliente** está diseñada para solicitar, contratar y calificar servicios. La **Cuenta Profesional** está dirigida a quienes desean ofrecer sus habilidades, gestionar su agenda y recibir pagos.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-header flex justify-between items-center">
+                                <span class="faq-title flex items-center text-gray-900">
+                                    <i class="fas fa-id-card mr-3 text-blue-500"></i>
+                                    ¿Qué requisitos necesito para registrarme como Profesional?
+                                </span>
+                                <i class="fas fa-chevron-down text-purple-400 faq-icon transition-transform duration-300"></i>
+                            </div>
+                            <div class="faq-content text-gray-600">
+                                <p>
+                                    Necesitará una identificación oficial, comprobante de domicilio, descripción detallada de sus servicios, años de experiencia y, en algunos casos, certificaciones de su especialidad (ver <a href="/ServiNet/pages/terminos-servicio.html" class="text-blue-600 hover:underline">Términos de Servicio</a>).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 bg-gray-50 border-b border-t border-gray-200">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-money-bill-wave mr-3 text-green-600"></i> PAGOS Y TRANSACCIONES
+                            </h3>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-header flex justify-between items-center">
+                                <span class="faq-title flex items-center text-gray-900">
+                                    <i class="fas fa-shield-alt mr-3 text-green-500"></i>
+                                    ¿Cómo protege ServiNet mi dinero durante el servicio?
+                                </span>
+                                <i class="fas fa-chevron-down text-purple-400 faq-icon transition-transform duration-300"></i>
+                            </div>
+                            <div class="faq-content text-gray-600">
+                                <p>
+                                    Utilizamos un sistema de **pago en custodia (Escrow)**. El pago es retenido por ServiNet de forma segura y solo se libera al profesional una vez que el cliente confirma que el servicio se ha completado a su entera satisfacción.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-header flex justify-between items-center">
+                                <span class="faq-title flex items-center text-gray-900">
+                                    <i class="fas fa-undo-alt mr-3 text-red-500"></i>
+                                    ¿Cuál es la política de cancelación y reembolso?
+                                </span>
+                                <i class="fas fa-chevron-down text-purple-400 faq-icon transition-transform duration-300"></i>
+                            </div>
+                            <div class="faq-content text-gray-600">
+                                <p>
+                                    La cancelación por parte del cliente debe realizarse con un mínimo de 24 horas de antelación para un reembolso completo. Las cancelaciones tardías o por inasistencia pueden estar sujetas a un cargo. Consulte la sección de Cancelaciones en nuestros <a href="/ServiNet/pages/terminos-servicio.html" class="text-blue-600 hover:underline">Términos de Servicio</a> para el detalle completo.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 bg-gray-50 border-b border-t border-gray-200">
+                            <h3 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-star-half-alt mr-3 text-yellow-600"></i> CALIDAD Y REPUTACIÓN
+                            </h3>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-header flex justify-between items-center">
+                                <span class="faq-title flex items-center text-gray-900">
+                                    <i class="fas fa-user-check mr-3 text-green-500"></i>
+                                    ¿Qué garantiza la verificación del Profesional?
+                                </span>
+                                <i class="fas fa-chevron-down text-purple-400 faq-icon transition-transform duration-300"></i>
+                            </div>
+                            <div class="faq-content text-gray-600">
+                                <p>
+                                    La verificación garantiza que el profesional ha pasado por revisiones de identidad, ha comprobado su experiencia laboral y no tiene reportes negativos en la plataforma. Sin embargo, ServiNet no es responsable directo de la calidad final del trabajo; el sistema de calificación por estrellas es la mejor herramienta de la comunidad.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-header flex justify-between items-center">
+                                <span class="faq-title flex items-center text-gray-900">
+                                    <i class="fas fa-exclamation-triangle mr-3 text-orange-500"></i>
+                                    ¿Qué hago si hay una disputa o estoy insatisfecho con el servicio?
+                                </span>
+                                <i class="fas fa-chevron-down text-purple-400 faq-icon transition-transform duration-300"></i>
+                            </div>
+                            <div class="faq-content text-gray-600">
+                                <p>
+                                    Contacte a nuestro equipo de soporte inmediatamente. ServiNet actuará como mediador para resolver la disputa, buscar un acuerdo entre ambas partes o determinar la liberación/retención del pago en custodia, según lo establecido en nuestros términos.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        </div>
+
+                </div>
+
+                <div class="text-center pt-10">
+                    <a href="/ServiNet/pages/contacto.html" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition duration-300">
+                        <i class="fas fa-paper-plane mr-2"></i> ¿Tienes otra duda? Contáctanos Directamente
+                    </a>
+                </div>
+
+            </div>
+        </section>
+        
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <script src="/ServiNet/assets/js/app.js"></script>
+    
+    <script src="/ServiNet/assets/js/faq.js"></script>
+
+</body>
+</html>

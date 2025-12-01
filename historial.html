@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Servicios - ServiNet</title>
+    <meta name="description" content="Revisa el historial de tus servicios contratados, el estado de las citas y las calificaciones de los profesionales en ServiNet.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+    
+</head>
+<body class="bg-gray-100">
+    
+    <div id="header-container"></div>
+    
+    <main class="min-h-screen py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-10 bg-white p-6 rounded-lg shadow-md">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-history text-blue-600 mr-3"></i>
+                    Historial de Servicios
+                </h1>
+                <p class="text-gray-500 mt-2">Revisa todos los servicios que has contratado a través de ServiNet.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div id="dashboard-nav-container"></div>
+                
+                <div class="md:col-span-2 space-y-6">
+                    
+                    <div class="bg-white p-4 rounded-lg shadow-md flex space-x-4">
+                        <input type="text" id="search-input" placeholder="Buscar por servicio o profesional" class="flex-grow border border-gray-300 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
+                        <select id="filter-select" class="border border-gray-300 rounded-md p-2">
+                            <option value="all">Todos los Estados</option>
+                            <option value="finalizada">Completado</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="cancelada">Cancelado</option>
+                        </select>
+                    </div>
+
+                    <div id="history-list" class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">
+                            <i class="fas fa-spinner fa-spin mr-2"></i> Cargando historial de servicios...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <div id="dispute-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center text-red-600">
+                <i class="fas fa-balance-scale-right mr-2"></i> Reportar Disputa
+            </h3>
+            <p class="text-gray-600 mb-4">Describe la razón del conflicto para que el administrador inicie la mediación. (Cita #<span id="dispute-cita-id"></span>)</p>
+            
+            <form id="dispute-form">
+                <input type="hidden" id="dispute-target-cita-id" name="cita_id">
+                <input type="hidden" id="dispute-iniciada-por" name="iniciada_por">
+
+                <div class="mb-6">
+                    <label for="dispute-motivo" class="form-label">Motivo del Reporte *</label>
+                    <textarea id="dispute-motivo" name="motivo" rows="4" required
+                              class="w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Ej: Servicio incompleto, Negativa de pago, Profesional no apareció."></textarea>
+                </div>
+                
+                <div id="dispute-message" class="mb-4 p-3 rounded-md hidden text-sm"></div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="document.getElementById('dispute-modal').classList.add('hidden');"
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="submit-dispute-btn"
+                            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                        <i class="fas fa-gavel mr-1"></i> Iniciar Mediación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="rating-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <h3 class="text-xl font-bold mb-4 flex items-center">
+                <i class="fas fa-star text-yellow-500 mr-2"></i> Finalizar y Calificar Servicio
+            </h3>
+            <p class="text-gray-600 mb-4">¡Ayúdanos a mantener la calidad! Tu calificación liberará el pago al profesional.</p>
+            
+            <form id="rating-form">
+                <div class="mb-4">
+                    <label for="calificacion-input" class="form-label">Calificación (1-5 Estrellas) *</label>
+                    <input type="number" id="calificacion-input" name="calificacion" required min="1" max="5" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Ej: 5">
+                </div>
+                <div class="mb-6">
+                    <label for="comentario-input" class="form-label">Comentario (Opcional)</label>
+                    <textarea id="comentario-input" name="comentario" rows="3" 
+                              class="w-full px-4 py-2 border border-gray-300 rounded-md" placeholder="Comparte tu experiencia..."></textarea>
+                </div>
+                
+                <div id="rate-message" class="mb-4 p-3 rounded-md hidden text-sm"></div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="document.getElementById('rating-modal').classList.add('hidden'); document.getElementById('rating-modal').classList.remove('flex');"
+                            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition">
+                        Cancelar
+                    </button>
+                    <button type="submit" id="submit-rating-btn"
+                            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                        Enviar Reseña y Liberar Pago
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/ServiNet/assets/js/app.js"></script>
+    
+<script>
+
+        let allHistoryData = []; 
+        let currentCitaToRate = null; // Variable global para la cita que se está calificando
+
+        // Función auxiliar para obtener la clase de color basada en el estado (ver styles.css)
+        function getStatusBadge(status) {
+            let statusText = status.charAt(0).toUpperCase() + status.slice(1);
+            let colorClass = 'status-pending bg-yellow-100 text-yellow-800'; // Default
+            
+            if (status === 'finalizada') {
+                colorClass = 'status-completed bg-green-100 text-green-800';
+                statusText = 'Finalizado'; // Unificado
+            } else if (status === 'cancelada') {
+                colorClass = 'status-cancelled bg-red-100 text-red-800';
+            } else if (status === 'confirmada') {
+                 colorClass = 'status-confirmed bg-blue-100 text-blue-800';
+            }
+            
+            return `<span class="${colorClass} text-xs font-semibold px-3 py-1 rounded-full">${statusText}</span>`;
+        }
+
+        function renderStars(rating, isStatic = true) {
+            let html = '';
+            const fixedRating = parseFloat(rating || 0).toFixed(1); 
+            
+            for (let i = 1; i <= 5; i++) {
+                html += `<i class="${i <= fixedRating ? 'fas' : 'far'} fa-star"></i>`;
+            }
+            return `<div class="text-yellow-500 flex items-center">${html} <span class="text-gray-600 ml-2 text-sm">(${fixedRating}/5.0)</span></div>`;
+        }
+        
+        function renderHistory(dataToRender) {
+            const listContainer = document.getElementById('history-list');
+            listContainer.innerHTML = '';
+            
+            if (dataToRender.length === 0) {
+                 listContainer.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-500">No se encontraron servicios en tu historial.</div>`;
+                 return;
+            }
+
+            dataToRender.forEach(item => {
+                
+                const isCompleted = item.estado === 'finalizada';
+                const isConfirmed = item.estado === 'confirmada'; 
+                const isPending = item.estado === 'pendiente';
+
+                const borderColor = isCompleted ? 'border-green-500' : 
+                                  (isPending || isConfirmed) ? 'border-yellow-500' : 'border-red-500';
+                
+                // Determinar el monto (Pagado si finalizada, Estimado si no)
+                const montoLabel = isCompleted ? 'Monto Pagado' : 'Monto Estimado';
+                const montoIcon = isCompleted ? 'fa-dollar-sign' : 'fa-hourglass-start';
+                
+                // 🔑 Enlace de Chat
+                const chatUrl = `/ServiNet/pages/chat-interfaz.html?prof=${item.prof_id_cuenta}`;
+
+                let actionsHtml;
+
+                if (isCompleted) {
+                    // Cita finalizada: Mostrar calificación y factura
+                    actionsHtml = `
+                    <div class="flex items-center space-x-4">
+                        <div class="text-yellow-500">
+                            ${renderStars(item.calificacion_prof)}
+                        </div>
+                        <button onclick="handleDispute(${item.id_cita}, 'cliente')" class="text-sm text-red-600 hover:underline">
+                            Reportar/Disputa
+                        </button>
+                    </div>
+                    <a href="${chatUrl}" class="text-sm text-blue-600 hover:underline">Mensajear a Profesional</a>
+                    
+                    <a href="/ServiNet/pages/factura.html?cita_id=${item.id_cita}" class="text-sm text-blue-600 hover:underline ml-4">Ver Factura</a>
+                    `;
+                } else if (isConfirmed) {
+                     // Cita confirmada: Botón de finalizar y botón de disputa
+                     actionsHtml = `
+                        <button onclick="handleRateAndComplete(${item.id_cita}, ${item.prof_id})" class="bg-green-600 text-white py-2 px-4 text-sm rounded-md hover:bg-green-700 transition mr-4">
+                            <i class="fas fa-star mr-1"></i> Finalizar y Calificar
+                        </button>
+                        <button onclick="handleDispute(${item.id_cita}, 'cliente')" class="bg-red-500 text-white py-2 px-4 text-sm rounded-md hover:bg-red-600 transition mr-4">
+                            Reportar/Disputa
+                        </button>
+                        <a href="${chatUrl}" class="text-sm text-blue-600 hover:underline">Mensajear a Profesional</a>
+                    `;
+                } else if (isPending) {
+                    // Cita pendiente: Solo disputa y chat (Si el profesional no acepta)
+                    actionsHtml = `
+                        <button onclick="handleDispute(${item.id_cita}, 'cliente')" class="bg-red-500 text-white py-2 px-4 text-sm rounded-md hover:bg-red-600 transition mr-4">
+                            Reportar/Disputa
+                        </button>
+                        <a href="${chatUrl}" class="text-sm text-blue-600 hover:underline">Mensajear a Profesional</a>
+                    `;
+                } else {
+                    // Cancelada
+                    actionsHtml = `
+                        <a href="${chatUrl}" class="text-sm text-blue-600 hover:underline">Mensajear a Profesional</a>
+                    `;
+                }
+
+                
+                const cardHtml = `
+                    <div class="bg-white p-6 rounded-lg shadow-md border-l-4 ${borderColor} hover:shadow-lg transition">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h2 class="text-xl font-bold text-gray-800">Cita #${item.id_cita}: ${item.servicio}</h2>
+                                <p class="text-sm text-gray-500">Contratado el: ${item.fecha_contratacion}</p>
+                            </div>
+                            ${getStatusBadge(item.estado)}
+                        </div>
+                        
+                        <div class="border-t border-gray-200 pt-4 space-y-2">
+                            <p class="text-gray-600"><i class="fas fa-user-tie text-blue-500 mr-2"></i> Profesional: **${item.profesional_nombre}**</p>
+                            <p class="text-gray-600"><i class="fas fa-calendar-check text-blue-500 mr-2"></i> Fecha del Servicio: ${item.fecha_servicio}</p>
+                            <p class="text-gray-600"><i class="fas ${montoIcon} text-blue-500 mr-2"></i> ${montoLabel}: $${item.monto} MXN</p>
+                        </div>
+
+                        <div class="mt-4 flex justify-between items-center">
+                            ${actionsHtml}
+                        </div>
+                    </div>
+                `;
+                listContainer.innerHTML += cardHtml;
+            });
+        }
+        
+        // Función para mostrar mensajes
+        function displayMessage(element, success, message) {
+            element.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700');
+            if (success) {
+                element.classList.add('bg-green-100', 'text-green-700');
+                element.classList.remove('bg-red-100', 'text-red-700');
+            } else {
+                element.classList.add('bg-red-100', 'text-red-700');
+                element.classList.remove('bg-green-100', 'text-green-700');
+            }
+            element.innerHTML = message;
+        }
+
+        // Función de Filtrado y Búsqueda
+        function applyFiltering() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const filterStatus = document.getElementById('filter-select').value;
+            
+            const filteredData = allHistoryData.filter(item => {
+                const matchesStatus = filterStatus === 'all' || item.estado === filterStatus;
+                const matchesSearch = !searchTerm || 
+                                      item.servicio.toLowerCase().includes(searchTerm) || 
+                                      item.profesional_nombre.toLowerCase().includes(searchTerm);
+                
+                return matchesStatus && matchesSearch;
+            });
+            
+            renderHistory(filteredData);
+        }
+
+        // Carga de datos
+        async function loadClientHistory() {
+            try {
+                const response = await fetch('/ServiNet/api/get_client_history.php');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allHistoryData = result.history;
+                    applyFiltering(); // Renderiza los datos iniciales
+                } else {
+                    document.getElementById('history-list').innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-red-500">Error al cargar historial: ${result.message}</div>`;
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                document.getElementById('history-list').innerHTML = `<div class="bg-white p-6 rounded-lg shadow-md text-center text-red-500">Error de conexión con el servidor.</div>`;
+            }
+        }
+        
+        // 🔑 Manejador para abrir el modal de Disputa
+        window.handleDispute = function(citaId, role) {
+            const disputeModal = document.getElementById('dispute-modal');
+            const form = document.getElementById('dispute-form');
+            
+            document.getElementById('dispute-cita-id').textContent = `#${citaId}`;
+            document.getElementById('dispute-target-cita-id').value = citaId;
+            document.getElementById('dispute-iniciada-por').value = role;
+
+            disputeModal.classList.remove('hidden');
+            disputeModal.classList.add('flex');
+            document.getElementById('dispute-message').classList.add('hidden');
+            form.reset();
+        };
+
+
+        // 🔑 Manejador del botón "Finalizar y Calificar"
+        window.handleRateAndComplete = function(citaId, profId) {
+             currentCitaToRate = { citaId, profId }; // Guarda la info globalmente
+             // Abre el modal de calificación
+             document.getElementById('rating-modal').classList.remove('hidden');
+             document.getElementById('rating-modal').classList.add('flex');
+             document.getElementById('rating-form').reset();
+             document.getElementById('rate-message').classList.add('hidden');
+        };
+
+        // 🔑 Listener de Envío de Disputa
+        document.getElementById('dispute-form')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const submitBtn = document.getElementById('submit-dispute-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch('/ServiNet/api/create_disputa.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    displayMessage(document.getElementById('dispute-message'), true, result.message);
+                    form.reset();
+                    
+                    setTimeout(() => {
+                        document.getElementById('dispute-modal').classList.add('hidden');
+                        loadClientHistory(); // Recargar historial para actualizar el estado
+                    }, 1500);
+                } else {
+                    displayMessage(document.getElementById('dispute-message'), false, '❌ Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                displayMessage(document.getElementById('dispute-message'), false, 'Error de conexión con el servidor.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+
+        // 🔑 Manejador de la Calificación (Asume que el modal existe y tiene el ID rating-form)
+        document.getElementById('rating-form')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!currentCitaToRate) return;
+            
+            const submitBtn = document.getElementById('submit-rating-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            const rating = document.getElementById('calificacion-input').value;
+            const comentario = document.getElementById('comentario-input').value;
+
+            if (rating < 1 || rating > 5) {
+                displayMessage(document.getElementById('rate-message'), false, 'La calificación debe ser entre 1 y 5.');
+                return;
+            }
+
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('cita_id', currentCitaToRate.citaId);
+            formData.append('prof_id', currentCitaToRate.profId); // ID del Perfil Profesional (PP.id_profesional)
+            formData.append('calificacion', rating);
+            formData.append('comentario', comentario);
+            
+            try {
+                // 🚨 API DE REVIEWS Y LIBERACIÓN 🚨
+                const response = await fetch('/ServiNet/api/submit_review_and_release.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    displayMessage(document.getElementById('rate-message'), true, '✅ Calificación enviada y pago liberado.');
+                    setTimeout(() => {
+                        document.getElementById('rating-modal').classList.add('hidden');
+                        loadClientHistory(); // Recargar historial para ver el estado actualizado
+                    }, 1500);
+                } else {
+                    displayMessage(document.getElementById('rate-message'), false, '❌ Error al procesar: ' + result.message);
+                }
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                displayMessage(document.getElementById('rate-message'), false, 'Error de conexión con el servidor.');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carga el menú de navegación del cliente
+            fetch('/ServiNet/components/dashboard-nav-cliente.html')
+                .then(response => response.text())
+                .then(data => {
+                    const navContainer = document.getElementById('dashboard-nav-container');
+                    if(navContainer) navContainer.innerHTML = data;
+                });
+
+            // Añadir listeners para el filtrado y búsqueda
+            document.getElementById('search-input').addEventListener('input', applyFiltering);
+            document.getElementById('filter-select').addEventListener('change', applyFiltering);
+
+            loadClientHistory();
+            
+            // Listener para cerrar el modal de Disputa al hacer clic fuera
+            const disputeModal = document.getElementById('dispute-modal');
+            if (disputeModal) {
+                 disputeModal.addEventListener('click', (e) => {
+                     if (e.target === disputeModal) {
+                         disputeModal.classList.add('hidden');
+                         disputeModal.classList.remove('flex');
+                     }
+                 });
+            }
+        });
+    </script>

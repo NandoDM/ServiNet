@@ -1,0 +1,65 @@
+<nav class="md:col-span-1 bg-white p-6 rounded-lg shadow-md h-fit">
+    <h2 class="text-xl font-bold mb-4 text-gray-700">Panel de Control</h2>
+    <ul class="space-y-2">
+        <li>
+            <a href="/ServiNet/pages/dashboard/admin/index.html" id="nav-dashboard-index" class="flex items-center p-3 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                <i class="fas fa-chart-line mr-3 text-red-600"></i> Resumen General
+            </a>
+        </li>
+        <li>
+            <a href="/ServiNet/pages/dashboard/admin/usuarios.html" id="nav-dashboard-usuarios" class="flex items-center p-3 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                <i class="fas fa-users-cog mr-3 text-red-600"></i> Gestión de Usuarios
+            </a>
+        </li>
+        <li>
+            <a href="/ServiNet/pages/dashboard/admin/verificacion.html" id="nav-dashboard-verificacion" class="flex items-center p-3 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                <i class="fas fa-user-check mr-3 text-red-600"></i> Verificación Profesional
+            </a>
+        </li>
+        <li>
+            <a href="/ServiNet/pages/dashboard/admin/servicios.html" id="nav-dashboard-servicios" class="flex items-center p-3 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                <i class="fas fa-cogs mr-3 text-red-600"></i> Gestión de Servicios
+            </a>
+        </li>
+        <li>
+            <a href="/ServiNet/pages/dashboard/admin/transacciones.html" id="nav-dashboard-transacciones" class="flex items-center p-3 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                <i class="fas fa-money-check-alt mr-3 text-red-600"></i> Transacciones
+            </a>
+        </li>
+        <li>
+            <a href="/ServiNet/pages/dashboard/admin/disputas.html" id="nav-dashboard-disputas" class="flex items-center p-3 rounded-md text-gray-700 hover:bg-gray-100 transition">
+                <i class="fas fa-balance-scale-right mr-3 text-red-600"></i> Disputas y Soporte
+            </a>
+        </li>
+        <li class="border-t border-gray-200 pt-4 mt-4">
+            <button onclick="logout()" class="flex items-center p-3 rounded-md text-red-600 w-full text-left hover:bg-red-50 transition">
+                <i class="fas fa-sign-out-alt mr-3"></i> Cerrar Sesión
+            </button>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    // Lógica para resaltar el enlace de la página actual
+    document.addEventListener('DOMContentLoaded', function() {
+        const path = window.location.pathname;
+        const currentPath = path.substring(path.lastIndexOf('/') + 1);
+        
+        // Función auxiliar para resaltar
+        function highlightLink(id) {
+            const link = document.getElementById(id);
+            if (link) {
+                // Clases específicas del Admin: texto rojo y fondo rojo suave
+                link.classList.add('bg-red-50', 'text-red-700', 'font-semibold');
+                link.classList.remove('text-gray-700', 'hover:bg-gray-100');
+            }
+        }
+        
+        if (currentPath === 'index.html') highlightLink('nav-dashboard-index');
+        else if (currentPath === 'usuarios.html') highlightLink('nav-dashboard-usuarios');
+        else if (currentPath === 'verificacion.html') highlightLink('nav-dashboard-verificacion');
+        else if (currentPath === 'servicios.html') highlightLink('nav-dashboard-servicios');
+        else if (currentPath === 'transacciones.html') highlightLink('nav-dashboard-transacciones');
+        else if (currentPath === 'disputas.html') highlightLink('nav-dashboard-disputas');
+    });
+</script>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Cliente - ServiNet</title>
+    <meta name="description" content="Regístrate como cliente en ServiNet y encuentra los mejores profesionales para tus necesidades.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+    </head>
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 min-h-screen">
+    <div id="header-container"></div>
+
+    <section class="py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-12">
+                <div class="flex items-center justify-center mb-6">
+                    <img src="/ServiNet/assets/img/logo.png" alt="ServiNet Logo" class="w-14 h-12 object-contain mr-4">
+                    <span class="text-3xl font-bold text-gray-800">ServiNet</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                    Crear Cuenta como <span class="text-blue-600">Cliente</span>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Únete a miles de clientes que ya confían en ServiNet para sus necesidades
+                </p>
+                
+                <div class="flex justify-center items-center mb-8">
+                    <div class="step-indicator active">
+                        <span>1</span>
+                        <div class="step-label">Información</div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-indicator">
+                        <span>2</span>
+                        <div class="step-label">Verificación</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="client-benefits">
+                <h3 class="text-2xl font-bold mb-4 text-center">¿Qué obtienes como cliente?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <span>Encuentra profesionales verificados</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <span>Pagos 100% seguros</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span>Califica y revisa servicios</span>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <span>Reserva en línea 24/7</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8 lg:p-10">
+                <form id="registrationForm" class="space-y-8">
+                    <div class="form-section">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-4">
+                            <i class="fas fa-user-circle mr-3 text-blue-500"></i>
+                            Información de la Cuenta
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="correo" class="form-label">
+                                    <i class="fas fa-envelope mr-2 text-blue-500"></i>
+                                    Correo Electrónico *
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="correo" 
+                                    name="correo"
+                                    required
+                                    class="form-control"
+                                    placeholder="tu@email.com"
+                                    autocomplete="email"
+                                >
+                                <div class="form-error" id="emailError"></div>
+                            </div>
+                            
+                            <div class="relative">
+                                <label for="contrasena" class="form-label">
+                                    <i class="fas fa-lock mr-2 text-blue-500"></i>
+                                    Contraseña *
+                                </label>
+                                <input 
+                                    type="password" 
+                                    id="contrasena" 
+                                    name="contrasena"
+                                    required
+                                    class="form-control pr-12"
+                                    placeholder="Mínimo 8 caracteres"
+                                    autocomplete="new-password"
+                                    minlength="8"
+                                >
+                                <button type="button" class="password-toggle" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <div class="form-text">
+                                    La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.
+                                </div>
+                                <div class="form-error" id="passwordError"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="relative mt-6">
+                            <label for="confirmar_contrasena" class="form-label">
+                                <i class="fas fa-lock mr-2 text-blue-500"></i>
+                                Confirmar Contraseña *
+                            </label>
+                            <input 
+                                type="password" 
+                                id="confirmar_contrasena" 
+                                name="confirmar_contrasena"
+                                required
+                                class="form-control pr-12"
+                                placeholder="Repite tu contraseña"
+                                autocomplete="new-password"
+                            >
+                            <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <div class="form-error" id="confirmPasswordError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b pb-4">
+                            <i class="fas fa-address-card mr-3 text-blue-500"></i>
+                            Información Personal
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="nombre" class="form-label">
+                                    <i class="fas fa-user mr-2 text-blue-500"></i>
+                                    Nombre *
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="nombre" 
+                                    name="nombre"
+                                    required
+                                    class="form-control"
+                                    placeholder="Tu nombre"
+                                    autocomplete="given-name"
+                                >
+                                <div class="form-error" id="nombreError"></div>
+                            </div>
+                            
+                            <div>
+                                <label for="apellido_paterno" class="form-label">
+                                    Apellido Paterno *
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="apellido_paterno" 
+                                    name="apellido_paterno"
+                                    required
+                                    class="form-control"
+                                    placeholder="Apellido paterno"
+                                    autocomplete="family-name"
+                                >
+                                <div class="form-error" id="apellidoPaternoError"></div>
+                            </div>
+
+                            <div>
+                                <label for="apellido_materno" class="form-label">
+                                    Apellido Materno
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="apellido_materno" 
+                                    name="apellido_materno"
+                                    class="form-control"
+                                    placeholder="Apellido materno"
+                                    autocomplete="additional-name"
+                                >
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div>
+                                <label for="telefono" class="form-label">
+                                    <i class="fas fa-phone mr-2 text-blue-500"></i>
+                                    Teléfono *
+                                </label>
+                                <input 
+                                    type="tel" 
+                                    id="telefono" 
+                                    name="telefono"
+                                    required
+                                    class="form-control"
+                                    placeholder="+52 123 456 7890"
+                                    autocomplete="tel"
+                                >
+                                <div class="form-error" id="telefonoError"></div>
+                            </div>
+                            
+                            <div>
+                                <label for="municipio" class="form-label">
+                                    <i class="fas fa-map-marker-alt mr-2 text-blue-500"></i>
+                                    Municipio (Puebla) *
+                                </label>
+                                <select 
+                                    id="municipio" 
+                                    name="municipio" 
+                                    required 
+                                    class="form-control"
+                                >
+                                    <option value="" disabled selected>Cargando municipios de Puebla...</option>
+                                    </select>
+                                <div class="form-error" id="municipioError"></div>
+                            </div>
+                            </div>
+                    </div>
+
+                    <div class="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                        <div class="flex items-start space-x-4">
+                            <input 
+                                type="checkbox" 
+                                id="terminos" 
+                                name="terminos"
+                                required
+                                class="mt-1 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            >
+                            <label for="terminos" class="text-gray-700 text-sm leading-relaxed">
+                                Acepto los <a href="/ServiNet/pages/terminos-servicio.html" class="text-blue-600 hover:underline font-semibold">términos de servicio</a> 
+                                y <a href="/ServiNet/pages/politica-privacidad.html" class="text-blue-600 hover:underline font-semibold">política de privacidad</a> de ServiNet. 
+                                Entiendo que mis datos serán procesados de acuerdo con las políticas de la plataforma.
+                            </label>
+                        </div>
+                        <div class="form-error" id="terminosError"></div>
+                    </div>
+
+                    <button 
+                        type="submit"
+                        class="btn-primary"
+                        id="registerBtn"
+                    >
+                        <i class="fas fa-user-plus mr-3"></i>
+                        Crear Cuenta de Cliente
+                    </button>
+                </form>
+
+                <div class="text-center mt-8 pt-8 border-t border-gray-200">
+                    <p class="text-gray-600 text-lg mb-4">
+                        ¿Ya tienes una cuenta?
+                    </p>
+                    <a href="/ServiNet/pages/auth/login.html" class="btn-outline">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Iniciar Sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script src="/ServiNet/assets/js/app.js"></script> 
+    <script src="/ServiNet/assets/js/register_utils.js"></script>
+</body>
+</html>

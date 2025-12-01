@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura de Servicio - ServiNet</title>
+    <meta name="description" content="Detalle de la transacción y el servicio completado a través de ServiNet.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+
+    <style>
+        /* Estilos para impresión */
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .invoice-container { box-shadow: none !important; border: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div id="header-container" class="no-print"></div>
+    
+    <main class="min-h-screen py-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div id="loading-state" class="text-center py-20">
+                <i class="fas fa-spinner fa-spin text-4xl text-blue-600"></i>
+                <p class="text-gray-600 mt-4">Generando factura...</p>
+            </div>
+
+            <div id="error-state" class="hidden text-center py-20 bg-red-100 text-red-700 rounded-lg">
+                <i class="fas fa-exclamation-triangle text-3xl mb-3"></i>
+                <h2 class="text-xl font-bold">No se pudo cargar la factura.</h2>
+                <p id="error-message"></p>
+            </div>
+
+            <div id="invoice-content" class="invoice-container bg-white rounded-xl shadow-2xl p-8 hidden">
+                
+                <div class="flex justify-between items-start border-b border-gray-300 pb-6 mb-6">
+                    <div class="space-y-2">
+                        <img src="/ServiNet/assets/img/logo.png" alt="ServiNet Logo" class="w-16 h-14 object-contain">
+                        <h1 class="text-3xl font-bold text-gray-800">FACTURA DE SERVICIO</h1>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-gray-600">ServiNet | R.F.C: SRVNET251112</p>
+                        <p class="text-sm text-gray-500">Tepexi De Rodríguez, Puebla</p>
+                        <p class="text-sm text-gray-500">info@servinet.com</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-sm">
+                    <div>
+                        <p class="font-bold text-gray-700 mb-1">FACTURA #</p>
+                        <p id="factura-id" class="text-blue-600 font-bold">FAC-00000</p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-700 mb-1">FECHA DE EMISIÓN</p>
+                        <p id="fecha-emision"></p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-700 mb-1">ESTADO</p>
+                        <p id="estado-pago" class="font-bold text-green-600">PAGADO</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 text-sm">
+                    <div>
+                        <p class="font-bold text-gray-700 mb-2 border-b pb-1">DATOS DEL CLIENTE</p>
+                        <p id="cliente-nombre"></p>
+                        <p id="cliente-email"></p>
+                        <p id="cliente-telefono"></p>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-700 mb-2 border-b pb-1">DATOS DEL PROFESIONAL</p>
+                        <p id="prof-nombre"></p>
+                        <p id="prof-categoria"></p>
+                        <p id="prof-municipio"></p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto mb-8">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50 text-sm">
+                            <tr>
+                                <th class="px-6 py-3 text-left font-medium text-gray-500 uppercase">Descripción del Servicio</th>
+                                <th class="px-6 py-3 text-right font-medium text-gray-500 uppercase">Tarifa Base</th>
+                                <th class="px-6 py-3 text-right font-medium text-gray-500 uppercase">Monto Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-sm" id="detalle-servicio-body">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="flex justify-end">
+                    <div class="w-full max-w-sm space-y-2 text-sm">
+                        <div class="flex justify-between font-semibold">
+                            <span>Subtotal:</span>
+                            <span id="subtotal-amount"></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Comisión ServiNet (Simulado 10%):</span>
+                            <span id="comision-amount"></span>
+                        </div>
+                        <div class="flex justify-between font-bold text-lg border-t pt-2 border-gray-400">
+                            <span>TOTAL PAGADO:</span>
+                            <span id="total-final-amount" class="text-blue-600"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-print text-center mt-8">
+                <button onclick="window.print()" class="bg-indigo-600 text-white py-3 px-6 rounded-md shadow-lg hover:bg-indigo-700 transition font-semibold">
+                    <i class="fas fa-print mr-2"></i> Imprimir / Guardar como PDF
+                </button>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="footer-container" class="no-print"></div>
+    
+    <script src="/ServiNet/assets/js/app.js"></script>
+    <script src="/ServiNet/assets/js/factura_renderer.js"></script>
+</body>
+</html>

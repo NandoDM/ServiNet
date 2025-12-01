@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - ServiNet</title>
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+
+    <style>
+        /* Estilos específicos del chat */
+        #messages-container {
+            max-height: 70vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+        }
+        .message-box {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .client-message { /* Mensajes del usuario logueado (Emisor) */
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .professional-message { /* Mensajes del profesional/contacto (Receptor) */
+            background-color: #e5e7eb; /* gray-200 */
+            color: #374151; /* gray-700 */
+            align-self: flex-start;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    
+    <div id="header-container"></div>
+    
+    <main class="min-h-screen py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
+                
+                <div class="bg-blue-600 text-white p-4 flex items-center">
+                    <div id="target-initials" class="w-10 h-10 rounded-full flex items-center justify-center bg-white text-blue-600 font-bold mr-3">
+                        --
+                    </div>
+                    <h2 class="text-xl font-bold" id="target-name-display">Cargando Contacto...</h2>
+                </div>
+                
+                <div id="messages-container">
+                    <div class="text-center text-gray-500">Inicia sesión y haz clic en "Contactar por Chat".</div>
+                </div>
+                
+                <form id="chat-send-form" class="p-4 border-t border-gray-200">
+                    <div class="flex space-x-3">
+                        <input type="text" id="message-input" placeholder="Escribe un mensaje..." 
+                               class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                        <button type="submit" class="bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+                
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <script src="/ServiNet/assets/js/app.js"></script>
+    <script src="/ServiNet/assets/js/chat.js"></script> 
+</body>
+</html>

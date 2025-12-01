@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresos - Profesional - ServiNet</title>
+    <meta name="description" content="Revisa el historial de ingresos, transacciones y estado de pagos de tus servicios en ServiNet.">
+    
+    <link rel="icon" href="/ServiNet/assets/img/favicon.ICO" type="image/png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/ServiNet/assets/css/styles.css"> 
+    
+</head>
+<body class="bg-gray-100">
+    
+    <div id="header-container"></div>
+    
+    <main class="min-h-screen py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <header class="mb-10 bg-white p-6 rounded-lg shadow-md professional-border">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-money-bill-wave professional-color mr-3"></i>
+                    Ingresos y Pagos
+                </h1>
+                <p class="text-gray-500 mt-2">Revisa tus ganancias, retiros y el saldo de tu cuenta.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div id="dashboard-nav-container"></div>
+                
+                <div class="md:col-span-2 space-y-8">
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6" id="kpi-container">
+                        <div class="bg-white p-5 rounded-lg shadow-md professional-border">
+                            <i class="fas fa-wallet professional-color text-2xl mb-2"></i>
+                            <p class="text-gray-500 text-sm">Saldo Actual</p>
+                            <div class="text-3xl font-bold text-gray-900" id="saldo-actual-amount">$2,450 MXN</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-md professional-border">
+                            <i class="fas fa-arrow-down professional-color text-2xl mb-2"></i>
+                            <p class="text-gray-500 text-sm">Pendiente por Liberar (Escrow)</p>
+                            <div class="text-3xl font-bold text-gray-900" id="pendiente-liberar-amount">$800 MXN</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-md professional-border">
+                            <i class="fas fa-arrow-up professional-color text-2xl mb-2"></i>
+                            <p class="text-gray-500 text-sm">Retiros (Simulado)</p>
+                            <div class="text-3xl font-bold text-gray-900" id="retiros-mes-amount">$4,500 MXN</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-4">
+                        <button class="bg-blue-600 text-white py-3 px-6 rounded-md shadow-lg hover:bg-blue-700 transition" onclick="alert('Funcionalidad para gestionar método de retiro')">
+                            <i class="fas fa-credit-card mr-2"></i> Configurar Retiro
+                        </button>
+                        <button class="bg-green-600 text-white py-3 px-6 rounded-md shadow-lg hover:bg-green-700 transition" onclick="alert('Simulación de retiro de fondos disponibles.')">
+                            <i class="fas fa-cash-register mr-2"></i> Retirar Fondos
+                        </button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-700 flex items-center">
+                            <i class="fas fa-list professional-color mr-2"></i> Historial de Transacciones (Últimos 10)
+                        </h2>
+                        
+                        <ul class="divide-y divide-gray-100" id="transaction-history-list">
+                            <li class="py-3 text-center text-gray-500">Cargando datos...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+    
+    <script src="/ServiNet/assets/js/app.js"></script>
+    <script src="/ServiNet/assets/js/ingresos_profesional.js"></script>
+</body>
+</html>
